@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import Header from './Header'
+import Header from './Header';
 import MapHeader from './components/map/MapHeader';
 import MapLayout from './components/map/MapLayout';
 import ChartHeader from './components/chart/ChartHeader';
 import ChartLayout from './components/chart/ChartLayout';
+import Modal from './components/map/MapModal';
 
 function App() {
   const [galleryType, setGalleryType] = useState('Map');
   const [dataSelection, setDataSelection] = useState('기본');
-  const [library, setLibrary] = useState('echarts');            // eChart or Chart.js
+  const [library, setLibrary] = useState('echarts'); // eChart or Chart.js
   const [chartType, setChartType] = useState('bar');
-  const [cols, setColumnCount] = useState(10);                  // Chart Count
+  const [cols, setColumnCount] = useState(10); // Chart Count
 
   // 1. 실제 드로잉에 사용될 파라미터 상태
   const [drawParams, setDrawParams] = useState(null);
@@ -22,9 +23,7 @@ function App() {
 
   return (
     <div>
-      <Header 
-        onGalleryType={setGalleryType} 
-      />
+      <Header onGalleryType={setGalleryType} />
       {galleryType === 'Map' ? (
         <>
           <MapHeader onDraw={handleDraw} />
@@ -34,20 +33,21 @@ function App() {
         </>
       ) : (
         <>
-          <ChartHeader 
-            onDataSelect={setDataSelection} 
-            onTypeChange={setChartType} 
-            onLibraryChange={setLibrary} 
-            onColumnCountChange={setColumnCount} 
+          <ChartHeader
+            onDataSelect={setDataSelection}
+            onTypeChange={setChartType}
+            onLibraryChange={setLibrary}
+            onColumnCountChange={setColumnCount}
           />
           <div style={{ padding: '10px 20px', borderBottom: '1px solid #ddd' }}>
-            <strong>설정:</strong> {dataSelection} | {chartType.toUpperCase()} | {library === 'echarts' ? 'ECharts' : 'Chart.js'}
+            <strong>설정:</strong> {dataSelection} | {chartType.toUpperCase()} |{' '}
+            {library === 'echarts' ? 'ECharts' : 'Chart.js'}
           </div>
-          <ChartLayout 
-            selectedData={dataSelection} 
-            chartType={chartType} 
+          <ChartLayout
+            selectedData={dataSelection}
+            chartType={chartType}
             library={library}
-            cols={cols} 
+            cols={cols}
           />
         </>
       )}

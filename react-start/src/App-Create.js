@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import Header from "./tests/Header";
-import Layout from "./tests/Layout";
+import React, { useState } from 'react';
+import Header from './tests/Header';
+import Layout from './tests/Layout';
 
 function App() {
   const [gridConfig, setGridConfig] = useState({
@@ -18,14 +18,14 @@ function App() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <Header onDraw={handleDraw} />
-      <main style={{ flex: 1, overflowY: "auto", backgroundColor: "#f0f2f5" }}>
+      <main style={{ flex: 1, overflowY: 'auto', backgroundColor: '#f0f2f5' }}>
         {gridConfig.isActive && <Layout columnCount={gridConfig.columnCount} />}
       </main>
     </div>

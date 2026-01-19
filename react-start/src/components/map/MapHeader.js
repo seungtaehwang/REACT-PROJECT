@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const Header = ({ onDraw }) => {
   const [inputs, setInputs] = useState({
@@ -9,13 +9,16 @@ const Header = ({ onDraw }) => {
     scribeSize: 200,
     columnCount: 3,
     mapCount: 6,
-    mapType: "EDS",
+    waferPixelSize: 300,
+    mapType: 'EDS',
+    dieData: [],
+    defectData: [],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     // mapType은 문자열, 나머지는 숫자로 변환
-    const newValue = name === "mapType" ? value : Number(value);
+    const newValue = name === 'mapType' ? value : Number(value);
     setInputs((prev) => ({ ...prev, [name]: newValue }));
   };
 
@@ -26,17 +29,17 @@ const Header = ({ onDraw }) => {
   return (
     <header
       style={{
-        padding: "15px 20px",
-        background: "#316da8",
-        color: "white",
-        display: "flex",
-        gap: "20px",
-        alignItems: "center",
+        padding: '15px 20px',
+        background: '#316da8',
+        color: 'white',
+        display: 'flex',
+        gap: '20px',
+        alignItems: 'center',
       }}
     >
-      <div style={{ display: "flex", gap: "15px" }}>
+      <div style={{ display: 'flex', gap: '15px' }}>
         <label>
-          Size:{" "}
+          Size:{' '}
           <input
             name="waferSize"
             type="number"
@@ -46,7 +49,7 @@ const Header = ({ onDraw }) => {
           />
         </label>
         <label>
-          Edge:{" "}
+          Edge:{' '}
           <input
             name="waferEdge"
             type="number"
@@ -56,7 +59,7 @@ const Header = ({ onDraw }) => {
           />
         </label>
         <label>
-          Die X:{" "}
+          Die X:{' '}
           <input
             name="dieSizeX"
             type="number"
@@ -66,7 +69,7 @@ const Header = ({ onDraw }) => {
           />
         </label>
         <label>
-          Die Y:{" "}
+          Die Y:{' '}
           <input
             name="dieSizeY"
             type="number"
@@ -76,7 +79,7 @@ const Header = ({ onDraw }) => {
           />
         </label>
         <label>
-          Scribe:{" "}
+          Scribe:{' '}
           <input
             name="scribeSize"
             type="number"
@@ -150,14 +153,14 @@ const Header = ({ onDraw }) => {
 };
 
 const styles = {
-  input: { width: "80px", padding: "5px", marginLeft: "5px" },
+  input: { width: '80px', padding: '5px', marginLeft: '5px' },
   button: {
-    padding: "8px 20px",
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+    padding: '8px 20px',
+    backgroundColor: '#007bff',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
   },
 };
 
