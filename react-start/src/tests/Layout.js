@@ -1,44 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import WaferMap from './WaferMap';
 
-const Layout = ({ config }) => {
-  // 9개의 맵 생성
-  const mapList = Array.from({ length: 9 });
+const GalleryLayout = ({ config }) => {
+  // 현재 확대된 맵의 인덱스나 ID를 저장 (null이면 전체 보기)
+  const [selectedMapId, setSelectedMapId] = useState(null);
 
+  // 1. 상세 보기 화면 (확대된 맵 1개)
+  if (selectedMapId !== null) {
+    return (
+      <div style={{ width: '100%', height: '100%', padding: '20px' }}>
+        <button
+          onClick={() => setSelectedMapId(null)}
+          style={{ marginBottom: '10px', cursor: 'pointer' }}
+        >
+          ← 목록으로 돌아가기
+        </button>
+        <div
+          style={{
+            width: '100%',
+            height: 'calc(100% - 50px)',
+            background: '#fff',
+            border: '2px solid #3498db',
+          }}
+        >
+          {/* 크게 보여줄 WaferMap */}
+          <WaferMap
+            type={config.type}
+            size={300000}
+            id={selectedMapId}
+            isDetail={true} // 상세 모드임을 알리는 prop (선택사항)
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // 2. 갤러리 목록 화면 (3열 그리드)
   return (
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)', // 3열 배치
+        gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '20px',
-        justifyItems: 'center',
+        padding: '20px',
       }}
     >
-      {mapList.map((_, index) => (
+      {Array.from({ length: config.count }).map((_, i) => (
         <div
-          key={index}
+          key={i}
+          onDoubleClick={() => setSelectedMapId(i)} // 더블클릭 시 ID 설정
           style={{
             background: 'white',
-            padding: '10px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+            border: '1px solid #ddd',
+            height: '300px',
+            cursor: 'zoom-in', // 확대 가능하다는 표시
+            transition: 'transform 0.2s',
           }}
+          title="더블클릭하여 확대"
         >
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: '5px',
-              fontSize: '12px',
-              fontWeight: 'bold',
-            }}
-          >
-            Map #{index + 1}
-          </div>
-          <WaferMap id={`map_${index}`} config={config} />
+          <WaferMap type={config.type} size={300000} id={i} />
         </div>
       ))}
     </div>
   );
 };
 
-export default Layout;
+export default GalleryLayout;

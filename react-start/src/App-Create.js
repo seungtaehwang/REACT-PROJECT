@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from './tests/Header';
 import Layout from './tests/Layout';
-
+import Legend from './tests/Legend';
 function App() {
   const [config, setConfig] = useState({
     waferSize: 300, // mm
@@ -23,6 +23,7 @@ function App() {
       <div style={{ flex: 1, overflowY: 'auto', backgroundColor: '#f0f2f5', padding: '20px' }}>
         <Layout config={config} />
       </div>
+      <Legend />
     </div>
   );
 }

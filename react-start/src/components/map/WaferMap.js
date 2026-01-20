@@ -2,9 +2,12 @@ import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { generateDefects } from './DefectGenerator';
 import { generateDies, generateMetroCD, generateGradient } from './DieGenerator';
 
-const WaferMap = ({ params }) => {
+const WaferMap = ({ params, dieDatas, defectDatas, cdDatas, isDetail }) => {
   const canvasRef = useRef(null);
+  const [dies, setEDS] = useState([]);
+  const [measures, setMEASURE] = useState([]);
   const [defects, setDefects] = useState([]);
+  const [cds, setMETRO] = useState([]);
   const [hoveredEDS, setHoveredEDS] = useState(null);
   const [hoveredMEASURE, setHoveredMEASURE] = useState(null);
   const [hoveredDefect, setHoveredDefect] = useState(null);
@@ -17,7 +20,8 @@ const WaferMap = ({ params }) => {
   const scale = usableSize / waferSize; // 패딩을 제외한 크기 기준으로 스케일 계산
 
   // useMemo를 이용하여 DieGenerator로 dies 생성
-  const dies = useMemo(() => {
+  dieDatas = useMemo(() => {
+    if (dieDatas) return;
     return generateDies(params);
   }, [params]);
 
@@ -31,23 +35,24 @@ const WaferMap = ({ params }) => {
   var minvalue = 0;
   var maxvalue = 0;
   var stepvalue = 0;
-
   if (params.mapType === 'MEASURE') {
-    itemvalues = dies.map((d) => d.itemValue);
+    itemvalues = dieDatas.map((d) => d.itemValue);
     minvalue = Math.min(...itemvalues);
     maxvalue = Math.max(...itemvalues);
     stepvalue = (maxvalue - minvalue) / stepCount;
   }
 
-  const defectDatas = useMemo(() => {
+  defectDatas = useMemo(() => {
     // DefectGenerator 호출하여 데이터 생성
+    if (defectDatas) return;
     if (params.mapType === 'DEFECT')
       return generateDefects(params, 150, 3, 2, 123); // (range, numRandom, numClusters, numScratches, seed)
     else return [];
   }, [params]);
 
-  const cds = useMemo(() => {
+  cdDatas = useMemo(() => {
     // Metro CD Generator 호출하여 데이터 생성
+    if (cdDatas) return;
     if (params.mapType === 'METRO-CD') return generateMetroCD(params, 2000);
     else return [];
   }, [params]);
@@ -85,7 +90,7 @@ const WaferMap = ({ params }) => {
     }
     // MEASURE
     if (params.mapType === 'MEASURE') {
-      found = dies.find((d) => {
+      found = measures.find((d) => {
         var valid = false;
         if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height)
           valid = true;
@@ -111,7 +116,7 @@ const WaferMap = ({ params }) => {
         setHoveredDefect(null);
       }
     }
-    // Defect
+    // METRO-CD
     if (params.mapType === 'METRO-CD') {
       found = cds.find((d) => {
         var dist = Math.sqrt((d.x - dataX) ** 2 + (d.y - dataY) ** 2);
@@ -127,13 +132,23 @@ const WaferMap = ({ params }) => {
   };
 
   if (params.mapType === 'METRO-CD') {
-    itemvalues = cds.map((d) => d.cdValue);
+    itemvalues = cdDatas.map((d) => d.cdValue);
     minvalue = Math.min(...itemvalues);
     maxvalue = Math.max(...itemvalues);
     stepvalue = (maxvalue - minvalue) / stepCount;
   }
 
   useEffect(() => {
+    if (params.mapType === 'EDS') {
+      setEDS(dieDatas);
+    } else if (params.mapType === 'MEASURE') {
+      setMEASURE(dieDatas);
+    } else if (params.mapType === 'DEFECT') {
+      setDefects(defectDatas);
+    } else if (params.mapType === 'METRO-CD') {
+      setMETRO(cdDatas);
+    }
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
@@ -145,6 +160,8 @@ const WaferMap = ({ params }) => {
 
     // 캔버스 초기화
     ctx.clearRect(0, 0, params.waferPixelSize, params.waferPixelSize);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, params.waferPixelSize, params.waferPixelSize);
 
     ctx.save();
     // 좌표계 변환
@@ -178,7 +195,7 @@ const WaferMap = ({ params }) => {
     // 3. 샘플 Die (격자) 그리기 - DieGenerator로 생성된 dies 사용
     ctx.strokeStyle = '#d9d9e4';
 
-    dies.forEach((die) => {
+    dieDatas.forEach((die) => {
       if (params.mapType === 'EDS') {
         if (die.status === 'Good') {
           ctx.fillStyle = '#392abe';
@@ -200,7 +217,6 @@ const WaferMap = ({ params }) => {
 
     // 4. DEFECT Map 인 경우 Defect Draw
     if (params.mapType === 'DEFECT') {
-      setDefects(defectDatas);
       defectDatas.forEach((defect) => {
         ctx.fillStyle = defect.color;
         ctx.beginPath();
@@ -214,7 +230,7 @@ const WaferMap = ({ params }) => {
 
     // 4. DEFECT Map 인 경우 Defect Draw
     if (params.mapType === 'METRO-CD') {
-      cds.forEach((cd) => {
+      cdDatas.forEach((cd) => {
         var idx = (cd.cdValue - minvalue) / stepvalue;
         ctx.fillStyle = colors[idx >= stepCount ? stepCount - 1 : idx];
         ctx.beginPath();
@@ -227,7 +243,7 @@ const WaferMap = ({ params }) => {
     }
 
     ctx.restore();
-  }, [waferSize, waferEdge, usableSize, params]);
+  }, [params, isDetail]);
 
   return (
     <>

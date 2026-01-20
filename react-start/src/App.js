@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from './Header';
-import MapHeader from './components/map/MapHeader';
-import MapLayout from './components/map/MapLayout';
+import MapHeader from './components/map/Header';
+import MapLayout from './components/map/Layout';
 import ChartHeader from './components/chart/ChartHeader';
 import ChartLayout from './components/chart/ChartLayout';
 import Modal from './components/map/MapModal';
