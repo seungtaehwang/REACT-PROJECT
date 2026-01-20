@@ -1,36 +1,40 @@
-import React from "react";
-import DefectWaferMap from "./DefectWaferMap"; // 가상의 맵 컴포넌트
+import React from 'react';
+import WaferMap from './WaferMap';
 
-const Layout = ({ columnCount }) => {
-  // 6개의 웨이퍼 맵 데이터 시뮬레이션
-  const waferData = Array.from({ length: 6 }, (_, i) => ({ id: i + 1 }));
-
-  const containerStyle = {
-    display: "grid",
-    // 사용자가 선택한 columnCount에 따라 그리드 열 개수 변경
-    gridTemplateColumns: `repeat(${columnCount}, 1fr)`,
-    gap: "20px",
-    padding: "20px",
-    justifyItems: "center",
-  };
+const Layout = ({ config }) => {
+  // 9개의 맵 생성
+  const mapList = Array.from({ length: 9 });
 
   return (
-    <div style={containerStyle}>
-      {waferData.map((data) => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)', // 3열 배치
+        gap: '20px',
+        justifyItems: 'center',
+      }}
+    >
+      {mapList.map((_, index) => (
         <div
-          key={data.id}
+          key={index}
           style={{
-            width: "100%",
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            background: "white",
-            padding: "10px",
+            background: 'white',
+            padding: '10px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
           }}
         >
-          <h5 style={{ textAlign: "center", margin: "0 0 10px 0" }}>
-            Wafer #{data.id}
-          </h5>
-          <DefectWaferMap id={data.id} />
+          <div
+            style={{
+              textAlign: 'center',
+              marginBottom: '5px',
+              fontSize: '12px',
+              fontWeight: 'bold',
+            }}
+          >
+            Map #{index + 1}
+          </div>
+          <WaferMap id={`map_${index}`} config={config} />
         </div>
       ))}
     </div>

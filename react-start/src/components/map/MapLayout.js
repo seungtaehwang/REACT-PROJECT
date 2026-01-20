@@ -41,6 +41,7 @@ const Layout = ({ params }) => {
         >
           <h4>Wafer #{id}</h4>
           <WaferMap
+            id={id}
             params={params} // Header로부터 전달받은 인자들
           />
         </div>
