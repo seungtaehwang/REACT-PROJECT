@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import AppTest from './App-Create';
 import Legend from './App-Legend';
 import AppRecharts from './App-Recharts';
+import AppMap from './App-Map';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
