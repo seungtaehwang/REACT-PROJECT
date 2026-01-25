@@ -1,12 +1,6 @@
 // DefectGenerator.js
 // Wafer Defect Data Generator for Cartesian coordinates
-export const generateDefects = (
-  params,
-  numRandom,
-  numClusters,
-  numScratches,
-  seed = 0,
-) => {
+export const generateDefects = (params, numRandom, numClusters, numScratches, seed = 0) => {
   const defects = [];
   const random = (s) => {
     // Seeded random for consistent defects if needed
@@ -19,12 +13,7 @@ export const generateDefects = (
 
   // Helper for generating Gaussian-like distribution
   const gaussianRandom = (center, spread) =>
-    center +
-    (random(currentSeed++) +
-      random(currentSeed++) +
-      random(currentSeed++) -
-      1.5) *
-      spread;
+    center + (random(currentSeed++) + random(currentSeed++) + random(currentSeed++) - 1.5) * spread;
 
   // 1. Random Defects
   for (let i = 0; i < numRandom; i++) {
@@ -35,13 +24,14 @@ export const generateDefects = (
     const x = Math.floor(Math.random() * (max - min + 1)) + min;
     const y = (random(currentSeed++) * 2 - 1) * range;
     if (Math.sqrt(x * x + y * y) < range) {
+      currentSeed++;
       defects.push({
         id: `R${i}`,
         x,
         y,
-        type: "Random",
-        color: "#130ffa",
-        size: 1000 + random(currentSeed++) * 1000,
+        type: 'Random',
+        color: '#130ffa',
+        size: Math.floor(Math.random() * (5000 - 1000 + 1)) + 1000,
       }); // Yellow
     }
   }
@@ -57,13 +47,14 @@ export const generateDefects = (
       const x = gaussianRandom(clusterCenterX, clusterSpread);
       const y = gaussianRandom(clusterCenterY, clusterSpread);
       if (Math.sqrt(x * x + y * y) < range) {
+        currentSeed++;
         defects.push({
           id: `C${c}-${i}`,
           x,
           y,
-          type: "Cluster",
-          color: "#be0b0b",
-          size: 800 + random(currentSeed++) * 800,
+          type: 'Cluster',
+          color: '#be0b0b',
+          size: Math.floor(Math.random() * (2500 - 800 + 1)) + 800,
         }); // Orange
       }
     }
@@ -75,9 +66,7 @@ export const generateDefects = (
     const startY = (random(currentSeed++) * 2 - 1) * range * 0.7;
     const endX = (random(currentSeed++) * 2 - 1) * range * 0.7;
     const endY = (random(currentSeed++) * 2 - 1) * range * 0.7;
-    const scratchLength = Math.sqrt(
-      (endX - startX) ** 2 + (endY - startY) ** 2,
-    );
+    const scratchLength = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
 
     if (scratchLength > range * 0.1) {
       // Only long enough scratches
@@ -93,8 +82,8 @@ export const generateDefects = (
             id: `S${s}-${i}`,
             x,
             y,
-            type: "Scratch",
-            color: "#F44336",
+            type: 'Scratch',
+            color: '#b130aa',
             size: 1200 + random(currentSeed++) * 1200,
           }); // Red
         }

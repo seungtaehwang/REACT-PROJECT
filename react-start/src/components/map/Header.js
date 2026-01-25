@@ -11,13 +11,14 @@ const Header = ({ onDraw }) => {
     mapCount: 6,
     waferPixelSize: 300,
     mapType: 'EDS',
+    realSize: false,
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, checked, value } = e.target;
     // mapType은 문자열, 나머지는 숫자로 변환
     const newValue = name === 'mapType' ? value : Number(value);
-    setInputs((prev) => ({ ...prev, [name]: newValue }));
+    setInputs((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : newValue }));
   };
 
   const onClickDraw = () => {
@@ -133,7 +134,7 @@ const Header = ({ onDraw }) => {
             name="mapType"
             value={inputs.mapType}
             onChange={handleChange}
-            style={styles.input}
+            style={{ width: '105px', padding: '5px', marginLeft: '5px' }}
           >
             <option value="EDS">EDS</option>
             <option value="MEASURE">MEASURE</option>
@@ -141,6 +142,20 @@ const Header = ({ onDraw }) => {
             <option value="METRO-CD">METRO-CD</option>
           </select>
         </label>
+        {inputs.mapType === 'DEFECT' ? (
+          <label>
+            Real Size:{' '}
+            <input
+              name="realSize"
+              type="checkbox"
+              checked={inputs.realSize}
+              onChange={handleChange}
+              style={{ padding: '5px' }}
+            />
+          </label>
+        ) : (
+          <></>
+        )}
 
         <button onClick={onClickDraw} style={styles.button}>
           Draw

@@ -223,12 +223,13 @@ const WaferMap = ({ params, dieDatas, defectDatas, cdDatas, isDetail }) => {
         // Defect 크기를 데이터 단위로 받지만, 화면에선 일정 픽셀 크기로 보이도록 조정
         // 이 예제에서는 2픽셀 반경으로 고정 (scaleFactor 역변환)
         var renderRadius = 2 / scale;
+        if (params.realSize === true) renderRadius = defect.size / 2;
         ctx.arc(defect.x, defect.y, renderRadius, 0, Math.PI * 2);
         ctx.fill();
       });
     }
 
-    // 4. DEFECT Map 인 경우 Defect Draw
+    // 4. Metro-CD Map 인 경우 Metro CD Draw
     if (params.mapType === 'METRO-CD') {
       cdDatas.forEach((cd) => {
         var idx = (cd.cdValue - minvalue) / stepvalue;
@@ -254,7 +255,7 @@ const WaferMap = ({ params, dieDatas, defectDatas, cdDatas, isDetail }) => {
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setHoveredDefect(null)}
         style={{
-          background: '#fff',
+          background: '#ffffff',
           padding: `${CANVAS_PADDING}px`,
           boxSizing: 'border-box',
         }}
