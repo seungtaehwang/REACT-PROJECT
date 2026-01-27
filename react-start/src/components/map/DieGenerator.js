@@ -1,7 +1,5 @@
 // DieGenerator.js
 
-import { color } from 'echarts';
-
 // Wafer Die Data Generator for Cartesian coordinates
 export const generateDies = (params) => {
   const dies = [];

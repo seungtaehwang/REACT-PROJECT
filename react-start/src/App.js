@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Header from './Header';
-import MapHeader from './components/map/Header';
-import MapLayout from './components/map/Layout';
 import ChartHeader from './components/chart/ChartHeader';
 import ChartLayout from './components/chart/ChartLayout';
-import Modal from './components/map/MapModal';
+import MapHeader from './components/map/Header';
+import MapLayout from './components/map/Layout';
+import MapApiLayout from './components/map/Layout-api';
 
 function App() {
   const [galleryType, setGalleryType] = useState('Map');
@@ -24,12 +24,20 @@ function App() {
   return (
     <div>
       <Header onGalleryType={setGalleryType} />
-      {galleryType === 'Map' ? (
+      {galleryType === 'Map' || galleryType === 'Map-Api' ? (
         <>
-          <MapHeader onDraw={handleDraw} />
+          <MapHeader onDraw={handleDraw} title={galleryType} />
           <hr />
           {/* 파라미터가 있을 때만 레이아웃 렌더링 */}
-          {drawParams && <MapLayout params={drawParams} />}
+          {galleryType === 'Map' ? (
+            <>
+              {drawParams && <MapLayout params={drawParams} />}
+            </>
+          ) : (
+            <>
+              {drawParams && <MapApiLayout params={drawParams} />}
+            </>
+          )}
         </>
       ) : (
         <>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-const Header = ({ onDraw }) => {
+const Header = ({ onDraw, title }) => {
   const [inputs, setInputs] = useState({
     waferSize: 300000,
     waferEdge: 3000,
@@ -8,6 +8,8 @@ const Header = ({ onDraw }) => {
     dieSizeY: 9000,
     scribeSize: 200,
     columnCount: 3,
+    shotCols: 3,
+    shotRows: 3,
     mapCount: 6,
     waferPixelSize: 300,
     mapType: 'EDS',
@@ -37,6 +39,7 @@ const Header = ({ onDraw }) => {
       }}
     >
       <div style={{ display: 'flex', gap: '15px' }}>
+        <label>{title}</label>
         <label>
           Size:{' '}
           <input

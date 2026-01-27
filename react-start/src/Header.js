@@ -1,4 +1,3 @@
-import React from "react";
 
 const Header = ({ onGalleryType }) => {
   return (
@@ -17,6 +16,12 @@ const Header = ({ onGalleryType }) => {
         style={{ cursor: "pointer" }}
       >
         Gallery Map
+      </button>
+      <button
+        onClick={() => onGalleryType("Map-Api")}
+        style={{ cursor: "pointer" }}
+      >
+        Gallery Map - Api
       </button>
       <button
         onClick={() => onGalleryType("Chart")}

@@ -1,9 +1,10 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { generateDefects } from './DefectGenerator';
-import { generateDies, generateMetroCD, generateGradient } from './DieGenerator';
+import { generateDies, generateGradient, generateMetroCD } from './DieGenerator';
 
 const WaferMap = ({ params, dieDatas, defectDatas, cdDatas, isDetail }) => {
   const canvasRef = useRef(null);
+  const [waferData, setWaferData] = useState({ dieList: [], shotList: [] });
   const [dies, setEDS] = useState([]);
   const [measures, setMEASURE] = useState([]);
   const [defects, setDefects] = useState([]);
