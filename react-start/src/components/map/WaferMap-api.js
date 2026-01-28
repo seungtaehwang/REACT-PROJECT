@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { generateGradient } from './DieGenerator';
 
-const WaferMap = ({ key, params, waferDatas, isDetail }) => {
+const WaferMap = ({ key, params, waferDatas, onUpdate, isDetail }) => {
   const canvasRef = useRef(null);
   const [dies, setEDS] = useState([]);
   const [measures, setMEASURE] = useState([]);
@@ -39,13 +39,16 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
     // 데이터 좌표계 상에서 거리 계산 (임계값도 scale에 맞춰 조정)
     const threshold = 5 / scale; // 화면상 5px 정도의 오차 허용
     var found = [];
-
+    var info = 'info...';
     // EDS
     if (params.mapType === 'EDS') {
       found = dies.find((d) => {
         var valid = false;
         if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height)
+        {
+          info ='chip info => ID: '+ d.id +', BIN: '+d.bin+', X: '+d.x+ 'um, Y: '+d.y +'um, Width: '+ d.width +'um, Height: '+d.height+'um';
           valid = true;
+        }
         return valid;
       });
 
@@ -60,7 +63,10 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
       found = measures.find((d) => {
         var valid = false;
         if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height)
+        {
           valid = true;
+          info = 'chip info => ID: '+ d.id +', ItemVaue: '+d.itemValue.toFixed(2)+', X: '+d.x+ 'um, Y: '+d.y +'um, Width: '+ d.width +'um, Height: '+d.height+'um';
+        }
         return valid;
       });
 
@@ -73,8 +79,14 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
     // Defect
     if (params.mapType === 'DEFECT') {
       found = defects.find((d) => {
+        var valid = false;
         var dist = Math.sqrt((d.x - dataX) ** 2 + (d.y - dataY) ** 2);
-        return dist < threshold;
+        if (dist < threshold)
+        {
+          valid = true;
+          info = 'defect info => ID: '+ d.id +', Type: '+d.type+', X: '+d.x.toFixed(2)+ 'um, Y: '+d.y.toFixed(2) +'um, Size: '+ d.size.toFixed(2) + 'um';
+        }
+        return valid;
       });
 
       if (found) {
@@ -86,8 +98,14 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
     // METRO-CD
     if (params.mapType === 'METRO-CD') {
       found = cds.find((d) => {
+        var valid = false;
         var dist = Math.sqrt((d.x - dataX) ** 2 + (d.y - dataY) ** 2);
-        return dist < threshold;
+        if (dist < threshold)
+        {
+          valid = true;
+          info = 'cd info => ID: '+ d.id +', X: '+d.x.toFixed(2)+ 'um, Y: '+d.y.toFixed(2) +'um, Value: '+ d.cdvalue.toFixed(2) + 'um';
+        }
+        return valid;
       });
 
       if (found) {
@@ -96,9 +114,8 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
         setHoveredMETRO(null);
       }
     }
+    onUpdate(info);
   };
-
-
 
   useEffect(() => {
     if (params.mapType === 'EDS') {
@@ -251,9 +268,9 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
           <hr style={{ borderColor: '#333' }} />
           ID: {hoveredEDS.id}
           <br />
-          X: {hoveredEDS.x} nm
+          X: {hoveredEDS.x.toFixed(0)} um
           <br />
-          Y: {hoveredEDS.y} nm
+          Y: {hoveredEDS.y.toFixed(0)} um
           <br />
           BIN: {hoveredEDS.bin}
         </div>
@@ -279,11 +296,11 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
           <hr style={{ borderColor: '#333' }} />
           ID: {hoveredMEASURE.id}
           <br />
-          X: {hoveredMEASURE.x} nm
+          X: {hoveredMEASURE.x.toFixed(0)} um
           <br />
-          Y: {hoveredMEASURE.y} nm
+          Y: {hoveredMEASURE.y.toFixed(0)} um
           <br />
-          VALUE: {hoveredMEASURE.itemValue}
+          VALUE: {hoveredMEASURE.itemValue.toFixed(0)}
         </div>
       )}
       {hoveredDefect && (
@@ -307,13 +324,13 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
           <hr style={{ borderColor: '#333' }} />
           ID: {hoveredDefect.id}
           <br />
-          X: {hoveredDefect.x.toFixed(0)} nm
+          X: {hoveredDefect.x.toFixed(0)} um
           <br />
-          Y: {hoveredDefect.y.toFixed(0)} nm
+          Y: {hoveredDefect.y.toFixed(0)} um
           <br />
           TYPE: {hoveredDefect.type}
           <br />
-          SIZE: {hoveredDefect.size.toFixed(0)} nm
+          SIZE: {hoveredDefect.size.toFixed(0)} um
         </div>
       )}
       {hoveredMETRO && (
@@ -337,11 +354,11 @@ const WaferMap = ({ key, params, waferDatas, isDetail }) => {
           <hr style={{ borderColor: '#333' }} />
           ID: {hoveredMETRO.id}
           <br />
-          X: {hoveredMETRO.x} nm
+          X: {hoveredMETRO.x.toFixed(0)} um
           <br />
-          Y: {hoveredMETRO.y} nm
+          Y: {hoveredMETRO.y.toFixed(0)} um
           <br />
-          VALUE: {hoveredMETRO.cdValue}
+          VALUE: {hoveredMETRO.cdvalue.toFixed(0)}
         </div>
       )}
     </>

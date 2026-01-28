@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Legend from './Legend';
 import WaferMap from './WaferMap-api'; // 이전에 만든 단일 웨이퍼 컴포넌트
 
-const Layout = ({ params }) => {
+const Layout = ({ params, onInfoUpdate }) => {
   // 현재 확대된 맵의 인덱스나 ID를 저장 (null이면 전체 보기)
   const [waferDataList, setWaferDataList] = useState([]);
   const [selectedMapId, setSelectedMapId] = useState(null);
@@ -83,23 +83,26 @@ const Layout = ({ params }) => {
         >
           <button
             onClick={() => setSelectedMapId(null)}
-            style={{ marginBottom: '10px', cursor: 'pointer' }}
+            style={{ marginBottom: '3px', cursor: 'pointer' }}
           >
             ← 목록으로 돌아가기
           </button>
           <div
             style={{
               border: '1px solid #ddd',
-              padding: '5px',
+              padding: '1px',
               textAlign: 'center',
             }}
           >
+            <h4>{params.mapType} Map #{selectedMapId}</h4>
             <WaferMap
               key={selectedMapId}
               params={params} // Header로부터 전달받은 인자들
               waferDatas={waferDataList[selectedMapId]}
+              onUpdate={onInfoUpdate}
               isDetail={true} // 상세 모드임을 알리는 prop (선택사항)
             />
+            <p style={{ fontSize: '11px', color: '#666' }}> Size: {params.waferSize}um, Edge: {params.waferEdge}um, Scribe: {params.scribeSize}um, DieSizeX: {params.dieSizeX}um, DieSizeY: {params.dieSizeY}um</p>            
           </div>
         </div>
         <aside
@@ -132,17 +135,19 @@ const Layout = ({ params }) => {
             onDoubleClick={() => setSelectedMapId(idx)} // 더블클릭 시 ID 설정
             style={{
               border: '1px solid #ddd',
-              padding: '5px',
+              padding: '1px',
               textAlign: 'center',
             }}
           >
-            <h4>Wafer #{idx}</h4>
+            <p style={{ fontSize: '12px', color: '#666' }}>{params.mapType} Map #{idx}</p>            
             <WaferMap
               key={idx}
               params={params} // Header로부터 전달받은 인자들
               waferDatas={data}
+              onUpdate={onInfoUpdate}
               isDetail={false} // 상세 모드임을 알리는 prop (선택사항)
             />
+            <p style={{ fontSize: '11px', color: '#666' }}> Size: {params.waferSize}um, Edge: {params.waferEdge}um, Scribe: {params.scribeSize}um, DieSizeX: {params.dieSizeX}um, DieSizeY: {params.dieSizeY}um</p>            
           </div>
         ))}
       </div>
