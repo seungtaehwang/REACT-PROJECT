@@ -44,9 +44,21 @@ const WaferMap = ({ key, params, waferDatas, onUpdate, isDetail }) => {
     if (params.mapType === 'EDS') {
       found = dies.find((d) => {
         var valid = false;
-        if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height)
-        {
-          info ='chip info => ID: '+ d.id +', BIN: '+d.bin+', X: '+d.x+ 'um, Y: '+d.y +'um, Width: '+ d.width +'um, Height: '+d.height+'um';
+        if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height) {
+          info =
+            'chip info => ID: ' +
+            d.id +
+            ', BIN: ' +
+            d.bin +
+            ', X: ' +
+            d.x +
+            'um, Y: ' +
+            d.y +
+            'um, Width: ' +
+            d.width +
+            'um, Height: ' +
+            d.height +
+            'um';
           valid = true;
         }
         return valid;
@@ -62,10 +74,22 @@ const WaferMap = ({ key, params, waferDatas, onUpdate, isDetail }) => {
     if (params.mapType === 'MEASURE') {
       found = measures.find((d) => {
         var valid = false;
-        if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height)
-        {
+        if (d.x <= dataX && dataX <= d.x + d.width && d.y <= dataY && dataY <= d.y + d.height) {
           valid = true;
-          info = 'chip info => ID: '+ d.id +', ItemVaue: '+d.itemValue.toFixed(2)+', X: '+d.x+ 'um, Y: '+d.y +'um, Width: '+ d.width +'um, Height: '+d.height+'um';
+          info =
+            'chip info => ID: ' +
+            d.id +
+            ', ItemVaue: ' +
+            d.itemValue.toFixed(2) +
+            ', X: ' +
+            d.x +
+            'um, Y: ' +
+            d.y +
+            'um, Width: ' +
+            d.width +
+            'um, Height: ' +
+            d.height +
+            'um';
         }
         return valid;
       });
@@ -81,10 +105,20 @@ const WaferMap = ({ key, params, waferDatas, onUpdate, isDetail }) => {
       found = defects.find((d) => {
         var valid = false;
         var dist = Math.sqrt((d.x - dataX) ** 2 + (d.y - dataY) ** 2);
-        if (dist < threshold)
-        {
+        if (dist < threshold) {
           valid = true;
-          info = 'defect info => ID: '+ d.id +', Type: '+d.type+', X: '+d.x.toFixed(2)+ 'um, Y: '+d.y.toFixed(2) +'um, Size: '+ d.size.toFixed(2) + 'um';
+          info =
+            'defect info => ID: ' +
+            d.id +
+            ', Type: ' +
+            d.type +
+            ', X: ' +
+            d.x.toFixed(2) +
+            'um, Y: ' +
+            d.y.toFixed(2) +
+            'um, Size: ' +
+            d.size.toFixed(2) +
+            'um';
         }
         return valid;
       });
@@ -100,10 +134,18 @@ const WaferMap = ({ key, params, waferDatas, onUpdate, isDetail }) => {
       found = cds.find((d) => {
         var valid = false;
         var dist = Math.sqrt((d.x - dataX) ** 2 + (d.y - dataY) ** 2);
-        if (dist < threshold)
-        {
+        if (dist < threshold) {
           valid = true;
-          info = 'cd info => ID: '+ d.id +', X: '+d.x.toFixed(2)+ 'um, Y: '+d.y.toFixed(2) +'um, Value: '+ d.cdvalue.toFixed(2) + 'um';
+          info =
+            'cd info => ID: ' +
+            d.id +
+            ', X: ' +
+            d.x.toFixed(2) +
+            'um, Y: ' +
+            d.y.toFixed(2) +
+            'um, Value: ' +
+            d.cdvalue.toFixed(2) +
+            'um';
         }
         return valid;
       });
@@ -134,7 +176,7 @@ const WaferMap = ({ key, params, waferDatas, onUpdate, isDetail }) => {
       minvalue = waferDatas.min;
       var maxvalue = waferDatas.max;
       stepvalue = (maxvalue - minvalue) / stepCount;
-    }    
+    }
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');

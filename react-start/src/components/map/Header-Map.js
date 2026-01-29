@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Header = ({ onDraw, title }) => {
+const Header = ({ onDraw, onDataType }) => {
   const [inputs, setInputs] = useState({
     waferSize: 300000,
     waferEdge: 3000,
@@ -39,7 +39,13 @@ const Header = ({ onDraw, title }) => {
       }}
     >
       <div style={{ display: 'flex', gap: '15px' }}>
-        <label>{title}</label>
+        <label>
+          Data Type:
+          <select name="dataType" value="" onChange={handleChange} style={styles.input}>
+            <option value={1}>Api</option>
+            <option value={1}>Gen</option>
+          </select>
+        </label>
         <label>
           Size:{' '}
           <input

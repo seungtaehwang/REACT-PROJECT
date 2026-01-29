@@ -3,9 +3,9 @@ import './App.css';
 import Header from './Header';
 import ChartHeader from './components/chart/ChartHeader';
 import ChartLayout from './components/chart/ChartLayout';
-import MapHeader from './components/map/Header';
-import MapLayout from './components/map/Layout';
-import MapApiLayout from './components/map/Layout-api';
+import MapHeader from './components/map/Header-Map';
+import MapLayout from './components/map/Gallery-Gen';
+import MapApiLayout from './components/map/Gallery-Api';
 
 function App() {
   const [galleryType, setGalleryType] = useState('Map');
@@ -13,7 +13,7 @@ function App() {
   const [library, setLibrary] = useState('echarts'); // eChart or Chart.js
   const [chartType, setChartType] = useState('bar');
   const [cols, setColumnCount] = useState(10); // Chart Count
-  const [waferInfo, setWaferInfo] = useState("Information...");
+  const [waferInfo, setWaferInfo] = useState('Information...');
   // 1. 실제 드로잉에 사용될 파라미터 상태
   const [drawParams, setDrawParams] = useState(null);
 
@@ -28,18 +28,14 @@ function App() {
       {galleryType === 'Map' || galleryType === 'Map-Api' ? (
         <>
           <MapHeader onDraw={handleDraw} title={galleryType} />
-          <p style={{ marginLeft: '10px', fontSize: '12px', color: '#443f3f' }}>{waferInfo}</p>            
+          <p style={{ marginLeft: '10px', fontSize: '12px', color: '#443f3f' }}>{waferInfo}</p>
           <hr />
-          
+
           {/* 파라미터가 있을 때만 레이아웃 렌더링 */}
           {galleryType === 'Map' ? (
-            <>
-              {drawParams && <MapLayout params={drawParams} />}
-            </>
+            <>{drawParams && <MapLayout params={drawParams} />}</>
           ) : (
-            <>
-              {drawParams && <MapApiLayout params={drawParams} onInfoUpdate={setWaferInfo} />}
-            </>
+            <>{drawParams && <MapApiLayout params={drawParams} onInfoUpdate={setWaferInfo} />}</>
           )}
         </>
       ) : (

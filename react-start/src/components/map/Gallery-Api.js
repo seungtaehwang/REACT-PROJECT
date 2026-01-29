@@ -37,14 +37,14 @@ const Layout = ({ params, onInfoUpdate }) => {
 
   useEffect(() => {
     const requestData = {
-        mapType: params.mapType,
-        waferSize: params.waferSize,
-        waferEdge: params.waferEdge,
-        dieSizeX: params.dieSizeX,
-        dieSizeY: params.dieSizeY,
-        scribeSize: params.scribeSize,
-        shotCols: params.shotCols,
-        shotRows: params.shotRows
+    mapType: params.mapType,
+    waferSize: params.waferSize,
+    waferEdge: params.waferEdge,
+    dieSizeX: params.dieSizeX,
+    dieSizeY: params.dieSizeY,
+    scribeSize: params.scribeSize,
+    shotCols: params.shotCols,
+    shotRows: params.shotRows
     };  
     const fetchData = async () => {
       const results = [];

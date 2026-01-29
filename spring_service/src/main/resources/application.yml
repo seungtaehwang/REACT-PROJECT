@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    # 파일 기반 DB 경로 설정 (프로젝트 루트에 mydb.sqlite 생성)
+    url: jdbc:sqlite:mydb.sqlite
+    driver-class-name: org.sqlite.JDBC
+
+  jpa:
+    # SQLite에 최적화된 방언(Dialect) 설정
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      # 앱 시작 시 엔티티에 맞춰 테이블 자동 생성/수정
+      ddl-auto: update
+    show-sql: true # 실행되는 SQL 쿼리를 콘솔에 출력

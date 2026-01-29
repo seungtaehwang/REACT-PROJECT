@@ -6,12 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import AppTest from './App-Create';
 import Legend from './App-Legend';
 import AppRecharts from './App-Recharts';
-import AppMap from './App-Map';
+import AppDeviceSolution from './App-DeviceSolution';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AppDeviceSolution />
   </React.StrictMode>,
 );
 

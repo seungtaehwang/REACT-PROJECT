@@ -51,8 +51,8 @@ public class MapController {
                 if (isInside(x, y, dieXSize, dieYSize, radius)) {
                     String dId = String.format("D_%d_%d", sCol, sRow);
                     if ("EDS".equals(mapType)) {
-                        int bin = rnd.nextInt(1, 10);
-                        String status = (bin < 4 ? "Good" : "Bad");
+                        int bin = (sRow % 2 == 0 || sCol % 2 == 0 ? 1 : rnd.nextInt(1, 10));
+                        String status = (bin == 1 ? "Good" : "Bad");
                         dieList.add(new EdsDie(dId, x, y, dieXSize, dieYSize, bin, status));
                     } else if ("MEASURE".equals(mapType)) {
                         double value = rnd.nextDouble(60, 200);
